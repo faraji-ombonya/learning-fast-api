@@ -23,7 +23,6 @@ window.addEventListener("load", function () {
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   updateUI(this.document.cookie);
-  console.log("hello world load");
 
   // signup of a new user to firebase
   this.document
@@ -61,7 +60,7 @@ window.addEventListener("load", function () {
 
         // get the ID token of the user who just logged in and force a redirect to /
         user.getIdToken().then((token) => {
-          document.cookie = "token=" + token + "path=/;SameSite=Strict";
+          document.cookie = "token=" + token + ";path=/;SameSite=Strict";
           window.location = "/";
         });
       })
@@ -107,7 +106,7 @@ function parseCookieToken(cookie) {
   for (let i = 0; i < strings.length; i++) {
     // split the string based on the = sign. if the LHS is token the return the RHS immediately
     var temp = strings[i].split("=");
-    if (temp[0] == "token") return temp[1];
+    if (temp[0].trim() == "token") return temp[1].trim();
   }
 
   //   if we got to this point and the token wasn't in the cookie so return the empty string
