@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Firestore basics</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}" />
+    <script
+      type="module"
+      src="{{ url_for('static', path='/firebase-login.js') }}"
+    ></script>
+  </head>
+  <body>
+    <div id="login-box" hidden="true">
+      Email: <input type="email" name="" id="email" /> <br />
+      Password: <input type="password" name="" id="password" /> <br />
+      <button id="login">Login</button>
+      <button id="sign-up">Sign Up</button>
+    </div>
+    <button id="sign-out" hidden="true">Sign Out</button>
+
+    <!-- if we hava a logged in user then show the user email address from the user_token object that was passed
+     we will also show th user document that has a name and age-->
+    {% if user_token %}
+    <p>User email: {{ user_token.email }}</p>
+    <p>Error message: {{ error_message }}</p>
+    <p>name: {{ user_info.get("name") }}</p>
+    <p>age: {{ user_info.get("age") }}</p>
+
+    <!-- form that we will use to add in an address to our user -->
+    <form action="/add-address" method="post">
+      Address Line 1: <input type="text" name="address1" /><br />
+      Address Line 2: <input type="text" name="address2" /><br />
+      Address Line 3: <input type="text" name="address3" /><br />
+      Address Line 4: <input type="text" name="address4" /><br />
+      <input type="submit" value="Add address" />
+    </form>
+
+    <p>Address List</p>
+    {% for address in address_list %}
+    <p>Array index {{ loop.index0 }}</p>
+    Address Line 1: {{ address.get('address1') }} <br />
+    Address Line 1: {{ address.get('address1') }} <br />
+    Address Line 1: {{ address.get('address1') }} <br />
+    Address Line 1: {{ address.get('address1') }} <br />
+
+    <form action="/delete-address" method="post">
+      <input type="hidden" value="{{ loop.index0 }}" name="index" />
+      <input type="submit" value="Delete Address" />
+    </form>
+    {% endfor %}
+    {%endif%}
+  </body>
+</html>
