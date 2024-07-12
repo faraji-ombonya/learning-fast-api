@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Firestore basics</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}" />
+    <script
+      type="module"
+      src="{{ url_for('static', path='/firebase-login.js') }}"
+    ></script>
+  </head>
+  <body>
+    <div id="login-box" hidden="true">
+      Email: <input type="email" name="" id="email" /> <br />
+      Password: <input type="password" name="" id="password" /> <br />
+      <button id="login">Login</button>
+      <button id="sign-up">Sign Up</button>
+    </div>
+    <button id="sign-out" hidden="true">Sign Out</button>
+
+    <!-- if we hava a logged in user then show the user email address from the user_token object that was passed
+     we will also show th user document that has a name and age-->
+    {% if user_token %}
+    <p>User email: {{ user_token.email }}</p>
+    <p>Error message: {{ error_message }}</p>
+
+    <form action="/add-directory" method="post">
+      Add a directory to the bucket:
+      <input type="text" name="dir_name" />
+      <input type="submit" value="Add" />
+    </form>
+
+    <form action="/upload-file" method="post" enctype="multipart/form-data">
+      Upload File:
+      <input type="file" name="file_name" />
+      <input type="submit" />
+    </form>
+
+    <h2>Directories in bucket</h2>
+    {% for dir in directory_list %} {{ dir.name }} <br />
+    {% endfor %}
+    <br />
+
+    <h2>File in bucket</h2>
+    {% for file in file_list %}
+    <form action="/download-file" method="post">
+      <input type="hidden" value="{{ file.name }}" name="filename" />
+      {{ file.name }} <input type="submit" value="Download" /><br />
+    </form>
+    {% endfor %}
+    <br />
+
+    {% endif %}
+  </body>
+</html>
