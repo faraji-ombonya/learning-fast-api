@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Firestore basics</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}" />
+    <script
+      type="module"
+      src="{{ url_for('static', path='/firebase-login.js') }}"
+    ></script>
+  </head>
+  <body>
+    <div id="login-box" hidden="true">
+      Email: <input type="email" name="" id="email" /> <br />
+      Password: <input type="password" name="" id="password" /> <br />
+      <button id="login">Login</button>
+      <button id="sign-up">Sign Up</button>
+    </div>
+    <button id="sign-out" hidden="true">Sign Out</button>
+
+    <!-- if we hava a logged in user then show the user email address from the user_token object that was passed
+     we will also show th user document that has a name and age-->
+    {% if user_token %}
+    <p>User email: {{ user_token.email }}</p>
+    <p>Error message: {{ error_message }}</p>
+
+    {% for doc in dummy_data %} {{ loop.index0 }} {{ doc.get('name') }} {%
+    endfor %}
+
+    <form action="/initialise" method="post">
+      Add our initializ=sed objects to firestore: <input type="submit" />
+    </form>
+
+    <form action="/filter-by-number" method="post">
+      Find objects with a number higher than
+      <input type="number" name="num" value="0" />
+      <input type="submit" />
+    </form>
+
+    <form action="/filter-by-range" method="post">
+      Find objects with a number between:
+      <input type="number" name="low" value="0" />
+      <input type="number" name="high" value="0" />
+      <input type="submit" />
+    </form>
+
+    <form action="/filter-by-string" method="post">
+      Find all objects that have a name starting with the letter f:
+      <input type="submit" />
+    </form>
+
+    <form action="/filter-by-both" method="post">
+      Find all objects with number greater than and name equal to:
+      <input type="number" name="num" value="0" />
+      <input type="text" name="textinput" />
+      <input type="submit" />
+    </form>
+
+    {% endif %}
+  </body>
+</html>
